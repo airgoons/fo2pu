@@ -58,6 +58,7 @@ def formation_tag_to_pydcs_units(map:SimpleNamespace, faction:str, nation:str, f
     if faction not in ["BLUE", "RED"]:
         raise ValueError("ERROR:  Invalid faction [{0}]".format(faction))    
 
+    # TODO:  check if nation is mappable for the given faction, if not then Default
     if nation is None:
         nation = "Default"
 

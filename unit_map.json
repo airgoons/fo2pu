@@ -27,197 +27,304 @@
                     },
                     "ARMOR": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.Leopard_2A5, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "ARTY": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.M_109, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "ENG": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375, 8"
+                        ]
                     },
                     "GUER": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.UAZ_469, 8"
+                        ]
                     },
                     "HQ": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375_PBU, 1",
+                            "vehicles.AirDefence.M1097_Avenger, 1",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "INF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.UAZ_469, 8"
+                        ]
                     },
                     "LAT": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375, 8"
+                        ]
                     },
                     "MECH": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.MCV_80, 8"
+                        ]
                     },
                     "MLRS": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.MLRS, 4",
+                            "vehicles.Unarmed.CHAP_M1083, 4"
+                        ]
                     },
                     "SF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.M1043_HMMWV_Armament, 8"
+                        ]
                     }
                 },
                 "FIN": {
                     "ADA": {
-                        "spawn_radius": 50,
-                        "unit_list": []
+                        "spawn_radius": 250,
+                        "unit_list": [
+                            "vehicles.AirDefence.SA_11_Buk_SR_9S18M1, 1",
+                            "vehicles.AirDefence.SA_11_Buk_CC_9S470M1, 1",
+                            "vehicles.AirDefence.SA_11_Buk_LN_9A310M1, 3"
+                        ]
                     },
                     "ARMOR": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.T72B, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "ARTY": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.M_109, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "ENG": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375, 8"
+                        ]
                     },
                     "GUER": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.UAZ_469, 8"
+                        ]
                     },
                     "HQ": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375_PBU, 1",
+                            "vehicles.AirDefence.HQ_7_LN_SP, 1",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "INF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.M1126_Stryker_ICV, 8"
+                        ]
                     },
                     "LAT": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375, 8"
+                        ]
                     },
                     "MECH": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.BMP_2, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "MLRS": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.Grad_FDDM, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "SF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.M1043_HMMWV_Armament, 8"
+                        ]
                     }
                 },
                 "SWE": {
-                    "ADA": [
-                        "dcs.vehicles.AirDefence.SA_11_Buk_CC_9S470M1, 1",
-                        "dcs.vehicles.AirDefence.SA_11_Buk_LN_9A310M1, 1",
-                        "dcs.vehicles.AirDefence.SA_11_Buk_SR_9S18M1, 1"
-                    ],
+                    "ADA": {
+                        "spawn_radius": 250,
+                        "unit_list": [
+                            "vehicles.AirDefence.Hawk_pcp, 1",
+                            "vehicles.AirDefence.Hawk_tr, 1",
+                            "vehicles.AirDefence.Hawk_sr, 1",
+                            "vehicles.AirDefence.Hawk_ln, 3"
+                        ]
+                    },
                     "ARMOR": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.Leopard_2A5, 4",
+                            "vehicles.Armor.MCV_80, 4"
+                        ]
                     },
                     "ARTY": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.SpGH_Dana, 4",
+                            "vehicles.Unarmed.CHAP_M1083, 4"
+                        ]
                     },
                     "ENG": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.CHAP_M1083, 8"
+                        ]
                     },
                     "GUER": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.UAZ_469, 8"
+                        ]
                     },
                     "HQ": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Hummer, 1",
+                            "vehicles.AirDefence.Roland_Radar, 1",
+                            "vehicles.AirDefence.Roland_ADS, 1",
+                            "vehicles.AirDefence.Soldier_stinger, 1",
+                            "vehicles.Unarmed.CHAP_M1083, 4"
+                        ]
                     },
                     "INF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.M1126_Stryker_ICV, 8"
+                        ]
                     },
                     "LAT": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.CHAP_M1083, 8"
+                        ]
                     },
                     "MECH": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.MCV_80, 4",
+                            "vehicles.Unarmed.CHAP_M1083, 4"
+                        ]
                     },
                     "MLRS": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.MLRS, 4",
+                            "vehicles.Unarmed.CHAP_M1083, 4"
+                        ]
                     },
                     "SF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.M1043_HMMWV_Armament, 8"
+                        ]
                     }
                 }
             }
         },
         "RED": {
             "unit_facing_angle": 270,
-            "nation_name_tag_map": {
-                        "spawn_radius": 50,
-                        "unit_list": []
-                    },
+            "nation_name_tag_map": null,
             "nation_unit_map": {
                 "Default": {
                     "ADA": {
-                        "spawn_radius": 500,
+                        "spawn_radius": 250,
                         "unit_list": [
+                            "vehicles.AirDefence.SA_11_Buk_SR_9S18M1, 1",
                             "vehicles.AirDefence.SA_11_Buk_CC_9S470M1, 1",
-                            "vehicles.AirDefence.SA_11_Buk_LN_9A310M1, 1",
-                            "vehicles.AirDefence.SA_11_Buk_SR_9S18M1, 1"
+                            "vehicles.AirDefence.SA_11_Buk_LN_9A310M1, 3"
                         ]
                     },
                     "ARMOR": {
                         "spawn_radius": 50,
                         "unit_list": [
-                            "vehicles.Armor.T_72B, 8"
+                            "vehicles.Armor.T_72B, 4",
+                            "vehicles.Armor.BMP_2, 4"
                         ]
                     },
                     "ARTY": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.SAU_Gvozdika, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "ENG": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375, 8"
+                        ]
                     },
                     "GUER": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.UAZ_469, 8"
+                        ]
                     },
                     "HQ": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375_PBU, 1",
+                            "vehicles.AirDefence.x_2S6_Tunguska, 1",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "INF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.BTR_82A, 8"
+                        ]
                     },
                     "LAT": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Ural_375, 8"
+                        ]
                     },
                     "MECH": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Armor.BMP_2, 8"
+                        ]
                     },
                     "MLRS": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Artillery.Grad_FDDM, 4",
+                            "vehicles.Unarmed.Ural_375, 4"
+                        ]
                     },
                     "SF": {
                         "spawn_radius": 50,
-                        "unit_list": []
+                        "unit_list": [
+                            "vehicles.Unarmed.Tigr_233036, 8"
+                        ]
                     }
                 }
             }
