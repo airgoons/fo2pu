@@ -250,7 +250,7 @@
         },
         "RED": {
             "unit_facing_angle": 270,
-            "nation_name_tag_map": null,
+            "nation_name_tag_map": {},
             "nation_unit_map": {
                 "Default": {
                     "ADA": {
