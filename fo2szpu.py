@@ -17,22 +17,33 @@ def json_data_to_namespace(data):
         })
     return data
 
-def UnitMap(path):
-    """Imports unit mapping data from a json"""
-    # Input Validation
-    path = os.path.abspath(path)
-    if not os.path.isfile(path):
-        raise RuntimeError("Path does not exist or is not a file [{0}]".format(self._path))
 
-    data = {}
-    try:
-        with open(path, 'r') as json_file:
-            data = json.load(json_file)
+class UnitMap:
+    def __init__(self, unit_type_tag_map:dict, factions:dict):
+        self.unit_type_tag_map = unit_type_tag_map
+        self.factions = factions
 
-            return SimpleNamespace(**{k: json_data_to_namespace(v) for k, v in data.items()})
-    except:
-        print("ERROR:  JSON mangled [{0}]".format(path))
-        raise
+    @classmethod
+    def from_json(cls, path:str):
+        """Imports unit mapping data from a json"""
+        # Input Validation
+        path = os.path.abspath(path)
+        if not os.path.isfile(path):
+            raise RuntimeError("Path does not exist or is not a file [{0}]".format(self._path))
+
+        data = None
+        try:
+            with open(path, 'r') as json_file:
+                data = json.load(json_file)
+        except:
+            print("ERROR:  JSON mangled [{0}]".format(path))  # TODO:  add logging
+            raise
+
+        return cls(
+                    unit_type_tag_map = data.get("unit_type_tag_map"),
+                    factions = data.get("factions")
+                )
+
 
 def nation_unit_string_to_pydcs_units(string_data):
     """Parses unit/quantity strings from within the dataset to a list of pydcs objects"""
@@ -53,6 +64,7 @@ def nation_unit_string_to_pydcs_units(string_data):
     except:
         print("ERROR:  mangled data --- unit_str={0} | qty_str={1}".format(unit_str, qty_str))
         raise
+
 
 def formation_tag_to_pydcs_units(map:SimpleNamespace, faction:str, nation:str, formation_tag:str):   
     if faction not in ["BLUE", "RED"]:
@@ -77,7 +89,95 @@ def formation_tag_to_pydcs_units(map:SimpleNamespace, faction:str, nation:str, f
         print("ERROR:  mangled data")
         raise
 
+
+class Formation:
+    def __init__(self, name:str, faction:str, nation_tag:str, type_tag:str, position=None):
+        self.name = name
+        self.faction = faction
+        self.nation_tag = nation_tag
+        self.type_tag = type_tag
+        self.position = position
+
+
+def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
+    drawings = miz.drawings.get_layer_by_name("Author")
+
+    unit_type_tags = unit_map.unit_type_tag_map.values()
+
+    formations = {}
+
+    for faction_name, faction_data in unit_map.factions.items():
+        print("INFO:  processing faction [{0}]".format(faction_name))  # TODO:  logging
+        nation_tags = faction_data.get("nation_name_tag_map").values()
+        
+
+        for obj in drawings.objects:
+            if "_label" in obj.name:
+                continue  # reject specific objects
+
+            if obj.name not in formations:  # avoid duplication
+                name = obj.name
+                tags = name.split("-")[1:]  # NOTE:  assuming no whitespace
+                faction = None
+                nation_tag = None
+                type_tag  = None
+                
+                if len(tags) == 0:
+                    print("WARN:  tagless object [{0}]".format(obj.name))  # TODO:  logging
+                    continue  # reject tagless items
+
+                if faction_name in tags:
+                    faction = faction_name
+
+                for tag in tags:
+                    if tag in nation_tags:
+                        if nation_tag is not None:
+                            print("WARN:  multiple nation tags [{0}]".format(obj.name))  # TODO:  logging
+                            continue
+                        else:
+                            if faction is None:
+                                faction = faction_name
+
+                            nation_tag = tag
+                        
+                    if tag in unit_type_tags:
+                        if type_tag is not None:
+                            print("WARN:  multiple unit type tags [{0}]".format(obj.name))  # TODO:  logging
+                            continue
+                        else:
+                            type_tag = tag
+
+                if (faction is None) or (nation_tag is None) or (type_tag is None):
+                    print("WARN:  invalid formation [{0}]".format(obj.name))  # TODO:  logging
+                    continue  # invalid formation
+                else:
+                    formations[obj.name] = Formation(name, faction, nation_tag, type_tag, obj.position)
+       
+    return formations
+
+
+def dcs_vehicle_groups_from_formations(formations:dict):
+    vehicle_groups = []
+    return vehicle_groups
+
+
+
 if __name__ == "__main__":
-    unit_map = UnitMap("unit_map.json")  # TODO: Add input argument
-    units = formation_tag_to_pydcs_units(unit_map, faction="RED", nation=None, formation_tag="ADA")
-    print(units)
+    target_file = "UTNS_ Uprising PRACTICE_fo_export (1).miz"  # TODO:  Add input argument
+    unit_map_file = "unit_map.json"    # TODO: Add input argument
+    print("INFO [fo2szpu]:  Configuration:  target_file= {0} | unit_map= {1}".format(target_file, unit_map_file))  # TODO:  add logging
+
+
+    unit_map = UnitMap.from_json(unit_map_file)  
+
+    miz = dcs.Mission(terrain=dcs.terrain.Kola())
+    miz.load_file(target_file)
+    print("INFO [fo2szpu]:  Mission Loaded")  # TODO:  add logging
+    
+    formations = formations_from_miz(miz, unit_map)
+    print("INFO [fo2szpu]:  Formations found= {0}".format(len(formations)))  # TODO:  add logging
+
+    vehicle_groups = dcs_vehicle_groups_from_formations(formations)
+    
+
+    print("INFO [fo2szpu]:  Done")  # TODO:  add logging
