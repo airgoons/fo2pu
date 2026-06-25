@@ -1,1 +1,1 @@
-git+https://github.com/wonkotron/pydcs@14e4befdb71adb181046ce845264407e21cbd4d6#egg=pydcs
+git+https://github.com/wonkotron/pydcs@2e438f25e59e6e21eecea52300d4e65db5eb047a#egg=pydcs
