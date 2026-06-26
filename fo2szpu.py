@@ -43,6 +43,11 @@ class UnitMap:
                     unit_type_tag_map = data.get("unit_type_tag_map"),
                     factions = data.get("factions")
                 )
+    
+    class VehicleGroup:
+        def __init__(self, spawn_radius:int, unit_group:list):
+            self.spawn_radius = spawn_radius
+            self.unit_group = unit_group
 
 
 def nation_unit_string_to_pydcs_units(string_data):
@@ -91,13 +96,14 @@ def formation_tag_to_pydcs_units(map:SimpleNamespace, faction:str, nation:str, f
 
 
 class Formation:
-    def __init__(self, name:str, faction:str, nation_tag:str, type_tag:str, position=None):
+    def __init__(self, name:str, faction:str, nation_tag:str, type_tag:str, position:dcs.mapping.Point, heading:int, vehicle_group:UnitMap.VehicleGroup):
         self.name = name
         self.faction = faction
         self.nation_tag = nation_tag
         self.type_tag = type_tag
         self.position = position
-
+        self.heading = heading
+        self.vehicle_group = vehicle_group
 
 def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
     drawings = miz.drawings.get_layer_by_name("Author")
@@ -107,7 +113,7 @@ def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
     formations = {}
 
     for faction_name, faction_data in unit_map.factions.items():
-        print("INFO:  processing faction [{0}]".format(faction_name))  # TODO:  logging
+        print("INFO:  Processing faction [{0}]".format(faction_name))  # TODO:  logging
         nation_tags = faction_data.get("nation_name_tag_map").values()
         
 
@@ -151,24 +157,48 @@ def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
                     print("WARN:  invalid formation [{0}]".format(obj.name))  # TODO:  logging
                     continue  # invalid formation
                 else:
-                    formations[obj.name] = Formation(name, faction, nation_tag, type_tag, obj.position)
+                    vehicle_group_raw = unit_map.factions.get(faction).get("nation_unit_map").get(nation_tag).get(type_tag)
+                    unit_group = []
+                    for unit in vehicle_group_raw.get("unit_group"):
+                        unit_ref = attrgetter(unit.get("unit_name"))(dcs)
+                        unit_group.extend([unit_ref] * unit.get("qty"))
+                        
+                    vehicle_group = UnitMap.VehicleGroup(vehicle_group_raw.get("spawn_radius"), unit_group)
+
+                    heading = unit_map.factions.get(faction).get("unit_heading")
+
+                    formations[obj.name] = Formation(name, faction, nation_tag, type_tag, obj.position, heading, vehicle_group)  # NOTE:  duplication checked above
        
     return formations
 
 
-def dcs_vehicle_groups_from_formations(formations:dict):
-    vehicle_groups = []
-    return vehicle_groups
+def add_groups_from_formations(miz:dcs.Mission, unit_map:UnitMap, formations:dict):
+    for formation_name, formation_obj in formations.items():
+        dcs_country = None
+        if formation_obj.faction == "BLUE":
+            dcs_country = dcs.countries.CombinedJointTaskForcesBlue
+        elif formation_obj.faction == "RED":
+            dcs_country = dcs.countries.CombinedJointTaskForcesRed
+        else:
+            raise ValueError("Invalid faction [{0}]".format(formation_obj.faction))
 
+        group = miz.vehicle_group_platoon(
+            country=dcs_country,
+            name=formation_name,
+            types=formation_obj.vehicle_group.unit_group,
+            position=formation_obj.position,
+            heading=formation_obj.heading
+        )
 
 
 if __name__ == "__main__":
     target_file = "UTNS_ Uprising PRACTICE_fo_export (1).miz"  # TODO:  Add input argument
     unit_map_file = "unit_map.json"    # TODO: Add input argument
-    print("INFO [fo2szpu]:  Configuration:  target_file= {0} | unit_map= {1}".format(target_file, unit_map_file))  # TODO:  add logging
+    output_file = "{0}_{1}.miz".format(os.path.splitext(target_file)[0], "fo2szpu")  # TODO: Add input argument with default as {target_file}_fo2szpu.miz
+    print("INFO [fo2szpu]:  Configuration:  target_file= {0} | unit_map= {1} | output_file={2}".format(target_file, unit_map_file, output_file))  # TODO:  add logging
 
 
-    unit_map = UnitMap.from_json(unit_map_file)  
+    unit_map = UnitMap.from_json(unit_map_file)
 
     miz = dcs.Mission(terrain=dcs.terrain.Kola())
     miz.load_file(target_file)
@@ -177,7 +207,9 @@ if __name__ == "__main__":
     formations = formations_from_miz(miz, unit_map)
     print("INFO [fo2szpu]:  Formations found= {0}".format(len(formations)))  # TODO:  add logging
 
-    vehicle_groups = dcs_vehicle_groups_from_formations(formations)
-    
+    vehicle_groups = add_groups_from_formations(miz, unit_map, formations)
+
+    print("INFO [fo2szpu]:  Saving output: {0}".format(target_file))
+    miz.save(output_file)
 
     print("INFO [fo2szpu]:  Done")  # TODO:  add logging
