@@ -1,5 +1,4 @@
 # Native Dependencies
-from types import SimpleNamespace
 import os.path
 import json
 from operator import attrgetter
