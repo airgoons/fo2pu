@@ -7,84 +7,12 @@ from operator import attrgetter
 import dcs
 
 # Internal Dependencies
-from unit_map import UnitMap, Faction, Nation, Formation
-
-
-class MizFormation:
-    def __init__(self, name:str, tags:list, faction:UnitMap.Faction, nation:UnitMap.Nation, formation:UnitMap.Formation, position:dcs.mapping.Point):
-        self.name = name
-        self.tags = tags
-        self.faction = faction
-        self.nation = nation
-        self.formation = formation
-        self.position = position
-
-
-def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
-    drawings = miz.drawings.get_layer_by_name(unit_map.miz_drawing_layer)
-
-    formations = {}
-    for obj in drawings.objects:
-        if "_label" in obj.name:
-            continue  # reject specific objects
-
-        if obj.name in formations:
-            continue  # reject duplicates
-
-        name = obj.name
-        tags = name.split("-")[1:]  # NOTE:  assuming no whitespace
-        if len(tags) == 0:
-            print(f"WARN:  tagless object [{name}]")  # TODO:  logging
-            continue  # reject tagless item
-
-        faction = None
-        nation = None
-        formation = None
-
-        # Resolve Faction and Nation
-        for tag in tags:
-            # Match faction tag
-            if faction is None:
-                if tag in unit_map.factions.keys():
-                    faction = unit_map.factions.get(tag)
-                    continue  # next tag
-
-            # Match nation tag
-            if nation is None:
-                if faction is not None:  # easy case first
-                    if tag in faction.nations.keys():
-                        nation = faction.nations.get(tag)
-                        continue  # next tag
-                else:
-                    for _, f in unit_map.factions.items():
-                        if tag in f.nations.keys():
-                            faction = f
-                            nation = faction.nations.get(tag)
-        
-        if faction is None:
-            print(f"WARN:  invalid formation {name}")
-            continue
-        else:
-            if nation is None:
-                nation = faction.get("Default", None)
-
-        if (faction is not None) and (nation is not None):
-            for tag in tags:
-                if tag in nation.formations.keys():
-                    if formation is not None:
-                        print(f"WARN:  multiple formation tags [{name}]")
-                    else:
-                        formation = nation.formations.get(tag)
-
-        if formation is None:
-            print(f"WARN:  invalid formation {name}")
-        else:
-            formations[name] = MizFormation(name, tags, faction, nation, formation, obj.position)
-
-    return formations
+from unit_map import UnitMap, Formation
+from vehicle_set import VehicleSet
 
 
 def formations_to_miz_unitgroups(miz:dcs.Mission, formations:dict):
+    """ Deprecated """
     for name, data in formations.items():
         print(f"INFO:  adding group [{name}]")
 
@@ -121,10 +49,9 @@ if __name__ == "__main__":
     miz.load_file(target_file)
     print("INFO [fo2szpu]:  Mission Loaded")  # TODO:  add logging
     
-    formations = formations_from_miz(miz, unit_map)
-    print(f"INFO [fo2szpu]:  formations detected = {len(formations.keys())}")
+    formations = Formation.formations_from_miz(miz, unit_map)
 
-    formations_to_miz_unitgroups(miz, formations)
+    vehicle_sets = VehicleSet.sets_from_formations(formations)
 
     print(f"INFO [fo2szpu]:  Saving output: {output_file}")
     miz.save(output_file)
