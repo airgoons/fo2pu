@@ -66,7 +66,7 @@ class Formation:
     def tags(self):
         return self._tags
 
-    @position.setter
+    @tags.setter
     def tags(self, tags:tuple):
         if tags is None:
             raise ValueError("tags cannot be None")
