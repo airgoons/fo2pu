@@ -38,13 +38,49 @@ class Formation:
         MLRS = "MLRS"
         SF = "SF"
         
-    def __init__(self, formation_type:FormationType, spawn_radius:int, unit_set:list):
+    def __init__(self, nation:Nation, formation_type:FormationType, zone_radius:int, dispersion_distance:int, unit_set:list):
+        self.nation = nation
         self.formation_type = formation_type
-        self.spawn_radius = spawn_radius
+        self.zone_radius = zone_radius
+        self.dispersion_distance = dispersion_distance
         self.unit_set = unit_set
+        
+        self._position = None
+        self._tags = None
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, position:dcs.mapping.Point):
+        if position is None:
+            raise ValueError("position cannot be None")
+        
+        if type(position) is not dcs.mapping.Point:
+            raise TypeError("position must be type dcs.mapping.Point")
+
+        self._position = position
+
+    @property
+    def tags(self):
+        return self._tags
+
+    @position.setter
+    def tags(self, tags:tuple):
+        if tags is None:
+            raise ValueError("tags cannot be None")
+
+        if type(tags) not in [list, tuple]:
+            raise TypeError("tags type must be list or tuple")
+
+        if len(tags) == 0:
+            raise ValueError("tags cannot be empty")
+
+        self._tags = tuple(tags)
 
     @staticmethod
-    def from_dict(key, data):
+    def from_dict(nation, key, data):
         unit_set_raw = [UnitSetEntry.from_dict(entry) for entry in data["unit_set"]]
         
         unit_set = []
@@ -52,26 +88,101 @@ class Formation:
             unit_set.extend([entry.dcs_obj] * entry.qty)
 
         return Formation(
+            nation = nation,
             formation_type = Formation.FormationType(key),
-            spawn_radius = data["spawn_radius"],
+            zone_radius = data["zone_radius"],
+            dispersion_distance = data["dispersion_distance"],
             unit_set = unit_set   
         )
 
+    @staticmethod
+    def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
+        drawings = miz.drawings.get_layer_by_name(unit_map.miz_drawing_layer)
+
+        formations = {}
+        for obj in drawings.objects:
+            if "_label" in obj.name:
+                continue  # reject specific objects
+
+            if obj.name in formations:
+                continue  # reject duplicates
+
+            name = obj.name
+            tags = name.split("-")[1:]  # NOTE:  assuming no whitespace
+            if len(tags) == 0:
+                print(f"WARN:  tagless object [{name}]")  # TODO:  logging
+                continue  # reject tagless item
+
+            faction = None
+            nation = None
+            formation = None
+
+            # Resolve Faction and Nation
+            for tag in tags:
+                # Match faction tag
+                if faction is None:
+                    if tag in unit_map.factions.keys():
+                        faction = unit_map.factions.get(tag)
+                        continue  # next tag
+
+                # Match nation tag
+                if nation is None:
+                    if faction is not None:  # easy case first
+                        if tag in faction.nations.keys():
+                            nation = faction.nations.get(tag)
+                            continue  # next tag
+                    else:
+                        for _, f in unit_map.factions.items():
+                            if tag in f.nations.keys():
+                                faction = f
+                                nation = faction.nations.get(tag)
+            
+            if faction is None:
+                print(f"WARN:  invalid formation {name}")
+                continue
+            else:
+                if nation is None:
+                    nation = faction.get("Default", None)
+
+            if (faction is not None) and (nation is not None):
+                for tag in tags:
+                    if tag in nation.formations.keys():
+                        if formation is not None:
+                            print(f"WARN:  multiple formation tags [{name}]")
+                        else:
+                            formation = nation.formations.get(tag)
+
+            if formation is None:
+                print(f"WARN:  invalid formation {name}")
+            else:
+                formation.position = obj.position
+                formation.tags = tags
+                formations[name] = formation
+
+        return formations
+
+
 
 class Nation:
-    def __init__(self, tag:str, formations:dict):
+    def __init__(self, faction:Faction, tag:str, formations:dict):
+        self.faction = faction
         self.tag = tag
         self.formations = formations
 
     @staticmethod
-    def from_dict(key, data):
-        return Nation(
+    def from_dict(faction, key, data):
+        nation = Nation(
+            faction=faction,
             tag = key,
-            formations = {
-                formation.formation_type: formation for formation in
-                (Formation.from_dict(k, v) for k,v in data.items())
-            }
+            formations = None
         )
+        
+        nation.formations = {
+            formation.formation_type: formation for formation in
+            (Formation.from_dict(nation, k, v) for k,v in data.items())
+        }
+
+        return nation
 
 
 class Faction:
@@ -82,14 +193,16 @@ class Faction:
 
     @staticmethod
     def from_dict(key, data):
-        return Faction(
+        faction = Faction(
             tag = key,
             unit_heading = data["unit_heading"],
-            nations = {
-                nation.tag: nation for nation in
-                (Nation.from_dict(k, v) for k,v in data["nations"].items())
-            }
+            nations = None
         )
+        faction.nations = {
+            nation.tag: nation for nation in
+            (Nation.from_dict(faction, k, v) for k,v in data["nations"].items())
+        }
+        return faction
 
 
 class UnitMap:

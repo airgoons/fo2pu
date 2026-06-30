@@ -10,7 +10,8 @@
             "nations": {
                 "Default": {
                     "ADA": {
-                        "spawn_radius": 250,
+                        "zone_radius": 100,
+                        "dispersion_distance": 250,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_SR_9S18M1", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_CC_9S470M1", "qty": 1},
@@ -18,33 +19,38 @@
                         ]
                     },
                     "ARMOR": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.Leopard_2A5", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "ARTY": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.M_109", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "ENG": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
                         ]
                     },
                     "GUER": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.UAZ_469", "qty": 8}
                         ]
                     },
                     "HQ": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375_PBU", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.M1097_Avenger", "qty": 1},
@@ -52,32 +58,37 @@
                         ]
                     },
                     "INF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.UAZ_469", "qty": 8}
                         ]
                     },
                     "LAT": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
                         ]
                     },
                     "MECH": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.MCV_80", "qty": 8}
                         ]
                     },
                     "MLRS": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.MLRS", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.CHAP_M1083", "qty": 4}
                         ]
                     },
                     "SF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.M1043_HMMWV_Armament", "qty": 8}
                         ]
@@ -85,7 +96,8 @@
                 },
                 "FIN": {
                     "ADA": {
-                        "spawn_radius": 250,
+                        "zone_radius": 100,
+                        "dispersion_distance": 250,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_SR_9S18M1", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_CC_9S470M1", "qty": 1},
@@ -93,33 +105,38 @@
                         ]
                     },
                     "ARMOR": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.T_72B", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "ARTY": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.M_109", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "ENG": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
                         ]
                     },
                     "GUER": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.UAZ_469", "qty": 8}
                         ]
                     },
                     "HQ": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375_PBU", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.HQ_7_LN_SP", "qty": 1},
@@ -127,33 +144,38 @@
                         ]
                     },
                     "INF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.M1126_Stryker_ICV", "qty": 8}
                         ]
                     },
                     "LAT": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
                         ]
                     },
                     "MECH": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.BMP_2", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "MLRS": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.Grad_FDDM", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "SF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.M1043_HMMWV_Armament", "qty": 8}
                         ]
@@ -161,7 +183,8 @@
                 },
                 "SWE": {
                     "ADA": {
-                        "spawn_radius": 250,
+                        "zone_radius": 100,
+                        "dispersion_distance": 250,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.AirDefence.Hawk_pcp", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.Hawk_tr", "qty": 1},
@@ -170,33 +193,38 @@
                         ]
                     },
                     "ARMOR": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.Leopard_2A5", "qty": 4},
                             {"dcs_obj_name": "vehicles.Armor.MCV_80", "qty": 4}
                         ]
                     },
                     "ARTY": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.SpGH_Dana", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.CHAP_M1083", "qty": 4}
                         ]
                     },
                     "ENG": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.CHAP_M1083", "qty": 8}
                         ]
                     },
                     "GUER": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.UAZ_469", "qty": 8}
                         ]
                     },
                     "HQ": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Hummer", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.Roland_Radar", "qty": 1},
@@ -206,33 +234,38 @@
                         ]
                     },
                     "INF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.M1126_Stryker_ICV", "qty": 8}
                         ]
                     },
                     "LAT": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.CHAP_M1083", "qty": 8}
                         ]
                     },
                     "MECH": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.MCV_80", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.CHAP_M1083", "qty": 4}
                         ]
                     },
                     "MLRS": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.MLRS", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.CHAP_M1083", "qty": 4}
                         ]
                     },
                     "SF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.M1043_HMMWV_Armament", "qty": 8}
                         ]
@@ -246,7 +279,8 @@
             "nations": {
                 "Default": {
                     "ADA": {
-                        "spawn_radius": 250,
+                        "zone_radius": 100,
+                        "dispersion_distance": 250,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_SR_9S18M1", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_CC_9S470M1", "qty": 1},
@@ -254,33 +288,38 @@
                         ]
                     },
                     "ARMOR": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.T_72B", "qty": 4},
                             {"dcs_obj_name": "vehicles.Armor.BMP_2", "qty": 4}
                         ]
                     },
                     "ARTY": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.SAU_Gvozdika", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "ENG": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
                         ]
                     },
                     "GUER": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.UAZ_469", "qty": 8}
                         ]
                     },
                     "HQ": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375_PBU", "qty": 1},
                             {"dcs_obj_name": "vehicles.AirDefence.x_2S6_Tunguska", "qty": 1},
@@ -288,32 +327,37 @@
                         ]
                     },
                     "INF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.BTR_82A", "qty": 8}
                         ]
                     },
                     "LAT": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
                         ]
                     },
                     "MECH": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.BMP_2", "qty": 8}
                         ]
                     },
                     "MLRS": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Artillery.Grad_FDDM", "qty": 4},
                             {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
                         ]
                     },
                     "SF": {
-                        "spawn_radius": 50,
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Unarmed.Tigr_233036", "qty": 8}
                         ]
