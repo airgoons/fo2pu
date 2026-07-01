@@ -44,9 +44,24 @@ class Formation:
         self.zone_radius = zone_radius
         self.dispersion_distance = dispersion_distance
         self.unit_set = unit_set
-        
+
+        self._name = None 
         self._position = None
         self._tags = None
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name:str):
+        if type(name) is not str:
+            raise TypeError("name must be type str")
+        
+        if name == "":
+            raise ValueError("name cannot be empty")
+        
+        self._name = name
 
     @property
     def position(self):
@@ -88,6 +103,7 @@ class Formation:
             unit_set.extend([entry.dcs_obj] * entry.qty)
 
         return Formation(
+            name = data["name"],
             nation = nation,
             formation_type = Formation.FormationType(key),
             zone_radius = data["zone_radius"],
@@ -155,6 +171,7 @@ class Formation:
             if formation is None:
                 print(f"WARN:  invalid formation {name}")
             else:
+                formation.name = obj.name
                 formation.position = obj.position
                 formation.tags = tags
                 formations[name] = formation
