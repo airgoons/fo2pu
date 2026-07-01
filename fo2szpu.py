@@ -51,7 +51,7 @@ if __name__ == "__main__":
     
     formations = Formation.formations_from_miz(miz, unit_map)
 
-    vehicle_sets = VehicleSet.sets_from_formations(formations)
+    vehicle_sets = VehicleSet.sets_from_formations(formations, miz)
 
     print(f"INFO [fo2szpu]:  Saving output: {output_file}")
     miz.save(output_file)
