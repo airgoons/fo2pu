@@ -103,7 +103,6 @@ class Formation:
             unit_set.extend([entry.dcs_obj] * entry.qty)
 
         return Formation(
-            name = data["name"],
             nation = nation,
             formation_type = Formation.FormationType(key),
             zone_radius = data["zone_radius"],
