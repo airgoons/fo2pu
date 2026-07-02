@@ -20,17 +20,14 @@ class UnitSpawner:
 
             static_point = dcs.point.StaticPoint(vehicles[0].position)
 
-            static_group = dcs.unitgroup.StaticGroup(miz.next_unit_id(), group_name)
+            static_group = dcs.unitgroup.StaticGroup(miz.next_group_id(), group_name)
 
-            country = None
+            country = UnitSpawner.get_country(miz, vehicles[0].parent)
+            heading = vehicles[0].parent.faction.unit_heading
+
             for vehicle in vehicles:
                 if not vehicle.is_static:
                     raise ValueError(f"vehicle.is_static = False when creating static group... [{vehicle.name}]")
-                
-                if country is None:
-                    country = UnitSpawner.get_country(miz, vehicle.parent)  # only set once
-
-                heading = vehicle.parent.faction.unit_heading
 
                 unit = dcs.unit.Static(miz.next_unit_id(), vehicle.name, vehicle.dcs_object, miz.terrain)
                 
@@ -52,7 +49,30 @@ class UnitSpawner:
     def add_active_group(miz:dcs.Mission, name:str, vehicles:list[Vehicle]):
         if len(vehicles) > 0:
             group_name = f"{name} ACTIVE"
-            return group_name
+
+
+            country = UnitSpawner.get_country(miz, vehicles[0].parent)
+            heading = vehicles[0].parent.faction.unit_heading
+            
+            active_group = miz.vehicle_group(country, group_name, vehicles[0].dcs_object, vehicles[0].position, heading, 1)
+            active_group.units[0].name = vehicles[0].name
+
+
+            for vehicle in vehicles:
+                if vehicle.is_static:
+                    raise ValueError(f"vehicle.is_static = True when creating active group [{vehicle.name}]")
+
+                unit = miz.vehicle(vehicle.name, vehicle.dcs_object)
+                # unit = dcs.unit.Unit(miz.next_unit_id(), miz.terrain, vehicle.name, vehicle.dcs_object)
+                unit.position = vehicle.position
+                unit.heading = heading
+                
+                active_group.add_unit(unit)
+
+            active_group.hidden_on_mfd = True
+            active_group.hidden_on_planner = True
+
+            return active_group
         else:
             return None
 
