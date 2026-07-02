@@ -102,8 +102,8 @@ class VehiclePositioner:
         
 
         # support area
-        theta_1s_high = normalize_heading(theta_0 - 180 + 70)
-        theta_1s_low = normalize_heading(theta_0 - 180 - 70)
+        theta_1s_high = normalize_heading(theta_0 - 180 + 35)
+        theta_1s_low = normalize_heading(theta_0 - 180 - 35)
         theta_1s = random.randint(theta_1s_low, theta_1s_high)
 
 
@@ -123,16 +123,17 @@ class VehiclePositioner:
                 combat_units.append(unit)
 
         vehicles = []
-        for combat_unit in combat_units:
+        for i in range(len(combat_units)):
+            combat_unit = combat_units[i]
             vehicle = None
             position = None
-            if len(vehicles) == 0:
+            if i == 0:
                 position = combat_area_center
             else:
-                p0 = combat_area_center.point_from_heading(180, formation.dispersion_distance)
+                p0 = combat_area_center.point_from_heading(180, formation.dispersion_distance * (i+1))
                 theta_0 = int(formation.position.heading_between_point(p0))
                 d0 = formation.position.distance_to_point(p0)
-                theta_1 = normalize_heading(random.randint(theta_0 - 5, theta_0 + 5))
+                theta_1 = normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
 
                 position = formation.position.point_from_heading(theta_1, d0)
 
@@ -146,16 +147,18 @@ class VehiclePositioner:
             vehicle = Vehicle(name, vehicle_set, combat_unit, position, is_static)
             vehicles.append(vehicle) 
 
-        for support_unit in support_units:
+        # for support_unit in support_units:
+        for i in range(len(support_units)):
+            support_unit = support_units[i] 
             vehicle = None
             position = None
-            if len(vehicles) == 0:
+            if i == 0:
                 position = support_area_center
             else:
-                p0 = support_area_center.point_from_heading(180, formation.dispersion_distance)
+                p0 = support_area_center.point_from_heading(180, formation.dispersion_distance * (i+1))
                 theta_0 = int(formation.position.heading_between_point(p0))
                 d0 = formation.position.distance_to_point(p0)
-                theta_1 = normalize_heading(random.randint(theta_0 - 5, theta_0 + 5))
+                theta_1 = normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
                 
                 position = formation.position.point_from_heading(theta_1, d0)
             
