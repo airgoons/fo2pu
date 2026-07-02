@@ -139,7 +139,7 @@ class VehiclePositioner:
             else:
                 name += " ACTIVE"
             
-            vehicle = Vehicle(name, self, combat_unit, position, is_static)
+            vehicle = Vehicle(name, formation, combat_unit, position, is_static)
             vehicles.append(vehicle) 
 
         for support_unit in support_units:
@@ -154,7 +154,6 @@ class VehiclePositioner:
                 theta_1 = normalize_heading(random.randint(theta_0 - 5, theta_0 + 5))
                 
                 position = formation.position.point_from_heading(theta_1, d0)
-            
             
             name = f"{formation.name} {len(vehicles)}"
             is_static = VehiclePositioner.check_static(support_unit)
