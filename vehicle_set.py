@@ -127,17 +127,20 @@ class VehiclePositioner:
             combat_unit = combat_units[i]
             vehicle = None
             position = None
+
             if i == 0:
                 position = combat_area_center
             else:
-                p0 = combat_area_center.point_from_heading(180, formation.dispersion_distance * (i+1))
-                theta_0 = int(formation.position.heading_between_point(p0))
-                d0 = formation.position.distance_to_point(p0)
+                p0 = combat_area_center.point_from_heading(180, formation.dispersion_distance * i)
+                theta_0 = int(combat_area_center.heading_between_point(p0))
+                d0 = combat_area_center.distance_to_point(p0)
                 theta_1 = normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
 
-                position = formation.position.point_from_heading(theta_1, d0)
+                position = combat_area_center.point_from_heading(theta_1, d0)
+
 
             name = f"{formation.name} {len(vehicles)}"
+
             is_static = VehiclePositioner.check_static(combat_unit)
             if is_static:
                 name += " STATIC"
@@ -155,12 +158,12 @@ class VehiclePositioner:
             if i == 0:
                 position = support_area_center
             else:
-                p0 = support_area_center.point_from_heading(180, formation.dispersion_distance * (i+1))
-                theta_0 = int(formation.position.heading_between_point(p0))
-                d0 = formation.position.distance_to_point(p0)
+                p0 = support_area_center.point_from_heading(180, formation.dispersion_distance * i)
+                theta_0 = int(support_area_center.heading_between_point(p0))
+                d0 = support_area_center.distance_to_point(p0)
                 theta_1 = normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
                 
-                position = formation.position.point_from_heading(theta_1, d0)
+                position = support_area_center.point_from_heading(theta_1, d0)
             
             name = f"{formation.name} {len(vehicles)}"
             is_static = VehiclePositioner.check_static(support_unit)
