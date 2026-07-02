@@ -5,6 +5,9 @@ from unit_map import UnitMap, Faction, Nation, Formation
 
 class Vehicle:
     def __init__(self, name:str, parent:VehicleSet, dcs_object, position:dcs.mapping.Point, is_static=True):
+        if type(parent) is not VehicleSet:
+            raise TypeError("parent must be type VehicleSet")
+
         self.name = name
         self.parent = parent
         self.dcs_object = dcs_object
@@ -21,7 +24,7 @@ class VehicleSet:
         self.formation = formation
         self.position = position
         self.positioner = VehiclePositioner(formation.zone_radius, formation.dispersion_distance)
-        self.vehicles = self.positioner.generate_positions(formation, miz)
+        self.vehicles = self.positioner.generate_positions(self, miz)
 
     @staticmethod
     def sets_from_formations(formations:dict, miz:dcs.Mission):
@@ -71,7 +74,7 @@ class VehiclePositioner:
     
     
 
-    def generate_positions(self, formation:Formation, miz:dcs.Mission):
+    def generate_positions(self, vehicle_set:VehicleSet, miz:dcs.Mission):
         def normalize_heading(heading):
             theta = heading
 
@@ -82,6 +85,8 @@ class VehiclePositioner:
                 theta = theta + 360
 
             return theta
+
+        formation = vehicle_set.formation
         
         theta_0 = normalize_heading(formation.nation.faction.unit_heading)
         
@@ -131,7 +136,6 @@ class VehiclePositioner:
 
                 position = formation.position.point_from_heading(theta_1, d0)
 
-
             name = f"{formation.name} {len(vehicles)}"
             is_static = VehiclePositioner.check_static(combat_unit)
             if is_static:
@@ -139,7 +143,7 @@ class VehiclePositioner:
             else:
                 name += " ACTIVE"
             
-            vehicle = Vehicle(name, formation, combat_unit, position, is_static)
+            vehicle = Vehicle(name, vehicle_set, combat_unit, position, is_static)
             vehicles.append(vehicle) 
 
         for support_unit in support_units:
@@ -162,7 +166,7 @@ class VehiclePositioner:
             else:
                 name += " ACTIVE"
 
-            vehicle = Vehicle(name, formation, support_unit, position, is_static)
+            vehicle = Vehicle(name, vehicle_set, support_unit, position, is_static)
             vehicles.append(vehicle) 
 
 
