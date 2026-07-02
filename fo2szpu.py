@@ -10,6 +10,8 @@ import dcs
 from unit_map import UnitMap, Formation
 from vehicle_set import VehicleSet
 
+from unit_spawner import UnitSpawner
+
 
 def formations_to_miz_unitgroups(miz:dcs.Mission, formations:dict):
     """ Deprecated """
@@ -52,6 +54,8 @@ if __name__ == "__main__":
     formations = Formation.formations_from_miz(miz, unit_map)
 
     vehicle_sets = VehicleSet.sets_from_formations(formations, miz)
+
+    groups = UnitSpawner.add_vehicle_sets(miz, vehicle_sets)
 
     print(f"INFO [fo2szpu]:  Saving output: {output_file}")
     miz.save(output_file)
