@@ -1,7 +1,8 @@
 import os
 import json
 from operator import attrgetter
-from enum import StrEnum, auto
+from enum import StrEnum
+from copy import deepcopy
 
 import dcs
 
@@ -165,7 +166,7 @@ class Formation:
                         if formation is not None:
                             print(f"WARN:  multiple formation tags [{name}]")
                         else:
-                            formation = nation.formations.get(tag)
+                            formation = deepcopy(nation.formations.get(tag))
 
             if formation is None:
                 print(f"WARN:  invalid formation {name}")
