@@ -68,31 +68,39 @@ class VehiclePositioner:
     def check_support(unit):
         return VehiclePositioner._check_property(unit, VehiclePositioner._SUPPORT_VEHICLE_OVERRIDE)
 
+    @staticmethod
+    def check_air_defense_battery(formation:Formation):
+        if formation.formation_type is Formation.FormationType.ADA:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def normalize_heading(heading):
+        theta = heading
+
+        while theta > 360:
+            theta = theta - 360
+        
+        while theta < 0:
+            theta = theta + 360
+
+        return theta
+
+
     def __init__(self, zone_radius:int, dispersion_distance:int):
         self.zone_radius = zone_radius
         self.dispersion_distance = dispersion_distance
     
     
-
-    def generate_positions(self, vehicle_set:VehicleSet, miz:dcs.Mission):
-        def normalize_heading(heading):
-            theta = heading
-
-            while theta > 360:
-                theta = theta - 360
-            
-            while theta < 0:
-                theta = theta + 360
-
-            return theta
-
+    def _generate_positions_default(self, vehicle_set:VehicleSet, miz:dcs.Mission):
         formation = vehicle_set.formation
-        
-        theta_0 = normalize_heading(formation.nation.faction.unit_heading)
+
+        theta_0 = VehiclePositioner.normalize_heading(vehicle_set.faction.unit_heading)
         
         # combat area
-        theta_1c_high = normalize_heading(theta_0 + 70)
-        theta_1c_low = normalize_heading(theta_0 - 70)
+        theta_1c_high = VehiclePositioner.normalize_heading(theta_0 + 70)
+        theta_1c_low = VehiclePositioner.normalize_heading(theta_0 - 70)
         theta_1c = random.randint(theta_1c_low, theta_1c_high)
 
         combat_distance = random.randint(1, formation.zone_radius)
@@ -102,8 +110,8 @@ class VehiclePositioner:
         
 
         # support area
-        theta_1s_high = normalize_heading(theta_0 - 180 + 35)
-        theta_1s_low = normalize_heading(theta_0 - 180 - 35)
+        theta_1s_high = VehiclePositioner.normalize_heading(theta_0 - 180 + 35)
+        theta_1s_low = VehiclePositioner.normalize_heading(theta_0 - 180 - 35)
         theta_1s = random.randint(theta_1s_low, theta_1s_high)
 
 
@@ -134,7 +142,7 @@ class VehiclePositioner:
                 p0 = combat_area_center.point_from_heading(180, formation.dispersion_distance * i)
                 theta_0 = int(combat_area_center.heading_between_point(p0))
                 d0 = combat_area_center.distance_to_point(p0)
-                theta_1 = normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
+                theta_1 = VehiclePositioner.normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
 
                 position = combat_area_center.point_from_heading(theta_1, d0)
 
@@ -161,7 +169,7 @@ class VehiclePositioner:
                 p0 = support_area_center.point_from_heading(180, formation.dispersion_distance * i)
                 theta_0 = int(support_area_center.heading_between_point(p0))
                 d0 = support_area_center.distance_to_point(p0)
-                theta_1 = normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
+                theta_1 = VehiclePositioner.normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
                 
                 position = support_area_center.point_from_heading(theta_1, d0)
             
@@ -177,4 +185,62 @@ class VehiclePositioner:
 
 
         return tuple(vehicles)
+
+
+    def _generate_positions_ada(self, vehicle_set:VehicleSet, miz:dcs.Mission):
+        def get_iads_designator():
+            return "[IADS PLACEHOLDER]"
+
+        formation = vehicle_set.formation
+
+        if len(formation.unit_set) <= 0:
+            raise ValueError("formation.unit_set must contain units")
+
+        theta_0 = VehiclePositioner.normalize_heading(vehicle_set.faction.unit_heading)
+
+        theta_1c_high = VehiclePositioner.normalize_heading(theta_0 + 70)
+        theta_1c_low = VehiclePositioner.normalize_heading(theta_0 - 70)
+        theta_1c = random.randint(theta_1c_low, theta_1c_high)
+
+        area_distance = random.randint(1, formation.zone_radius)
+        
+        area_center = formation.position.point_from_heading(theta_1c, area_distance)
+        
+        delta_theta2 = int(360/(len(formation.unit_set)))
+
+        vehicles = []
+        for i in range(len(formation.unit_set)):
+            position = None
+            if i == 0:
+                position = area_center
+            else:
+                theta2 = random.randint(
+                    VehiclePositioner.normalize_heading(delta_theta2 * i - int(delta_theta2/3)),
+                    VehiclePositioner.normalize_heading(delta_theta2 * i + int(delta_theta2/3))
+                )
+                position = area_center.point_from_heading(theta2, formation.dispersion_distance)
+
+
+            
+            iads_designator = get_iads_designator()
+            unit = formation.unit_set[i]
+            name = f"{formation.name} {len(vehicles)} ACTIVE {iads_designator}"
+
+            vehicle = Vehicle(name, vehicle_set, unit, position, False)
+            vehicles.append(vehicle)
+
+        return tuple(vehicles)
+
+
+    def generate_positions(self, vehicle_set:VehicleSet, miz:dcs.Mission):
+        vehicles = None
+
+        if VehiclePositioner.check_air_defense_battery(vehicle_set.formation):
+            vehicles = self._generate_positions_ada(vehicle_set, miz)
+        else:
+            vehicles = self._generate_positions_default(vehicle_set, miz)
+
+        return vehicles
+        
+        
 
