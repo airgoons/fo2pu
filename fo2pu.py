@@ -34,6 +34,4 @@ if __name__ == "__main__":
 
     print(f"INFO [fo2pu]:  Saving output: {output_file}")
     miz.save(output_file)
-
-
-print("INFO [fo2pu]:  Done")  # TODO:  add logging
+    print("INFO [fo2pu]:  Done")  # TODO:  add logging
