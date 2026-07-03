@@ -158,7 +158,6 @@ class VehiclePositioner:
         vehicles = []
         for i in range(len(combat_units)):
             combat_unit = combat_units[i]
-            vehicle = None
             position = None
 
             if i == 0:
@@ -172,38 +171,41 @@ class VehiclePositioner:
                 position = combat_area_center.point_from_heading(theta_1, d0)
 
 
-            name = f"{formation.name} {len(vehicles)}"
+            name = formation.name
 
             is_static = VehiclePositioner.check_static(combat_unit)
             if is_static:
                 name += " STATIC"
             else:
                 name += " ACTIVE"
+
+            name += f" {i}"
             
             vehicle = Vehicle(name, vehicle_set, combat_unit, position, is_static)
-            vehicles.append(vehicle) 
+            vehicles.append(vehicle)
 
         # for support_unit in support_units:
-        for i in range(len(support_units)):
-            support_unit = support_units[i] 
-            vehicle = None
+        for j in range(len(support_units)):
+            support_unit = support_units[j] 
             position = None
-            if i == 0:
+            if j == 0:
                 position = support_area_center
             else:
-                p0 = support_area_center.point_from_heading(180, formation.dispersion_distance * i)
+                p0 = support_area_center.point_from_heading(180, formation.dispersion_distance * j)
                 theta_0 = int(support_area_center.heading_between_point(p0))
                 d0 = support_area_center.distance_to_point(p0)
                 theta_1 = VehiclePositioner.normalize_heading(random.randint(theta_0 - 10, theta_0 + 10))
                 
                 position = support_area_center.point_from_heading(theta_1, d0)
             
-            name = f"{formation.name} {len(vehicles)}"
+            name = formation.name
             is_static = VehiclePositioner.check_static(support_unit)
             if is_static:
                 name += " STATIC"
             else:
                 name += " ACTIVE"
+
+            name += f" {j}"
 
             vehicle = Vehicle(name, vehicle_set, support_unit, position, is_static)
             vehicles.append(vehicle) 
@@ -246,7 +248,7 @@ class VehiclePositioner:
             
             unit = formation.unit_set[i]
             iads_designator = VehiclePositioner.get_iads_designator(unit)
-            name = f"{formation.name} {len(vehicles)} ACTIVE {iads_designator}"
+            name = f"{formation.name} ACTIVE {i} {iads_designator}"
 
             vehicle = Vehicle(name, vehicle_set, unit, position, False)
             vehicles.append(vehicle)
