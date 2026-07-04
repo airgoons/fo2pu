@@ -179,7 +179,7 @@ class VehiclePositioner:
             else:
                 name += " ACTIVE"
 
-            name += f" {i}"
+            name += f" COMBAT {i}"
             
             vehicle = Vehicle(name, vehicle_set, combat_unit, position, is_static)
             vehicles.append(vehicle)
@@ -205,11 +205,10 @@ class VehiclePositioner:
             else:
                 name += " ACTIVE"
 
-            name += f" {j}"
+            name += f" SUPPORT {j}"
 
             vehicle = Vehicle(name, vehicle_set, support_unit, position, is_static)
             vehicles.append(vehicle) 
-
 
         return tuple(vehicles)
 
