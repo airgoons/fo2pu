@@ -58,7 +58,7 @@ class UnitSpawner:
             active_group.units[0].name = vehicles[0].name
 
 
-            for vehicle in vehicles:
+            for vehicle in vehicles[1:]:
                 if vehicle.is_static:
                     raise ValueError(f"vehicle.is_static = True when creating active group [{vehicle.name}]")
 
