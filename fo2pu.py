@@ -14,7 +14,7 @@ from unit_spawner import UnitSpawner
 
 
 if __name__ == "__main__":
-    target_file = "UTNS_ Uprising PRACTICE_fo_export (1).miz"  # TODO:  Add input argument
+    target_file = "UTNS_U Day 1_test.miz"  # TODO:  Add input argument
     unit_map_file = "unit_map.json"    # TODO: Add input argument
     output_file = "{0}_{1}.miz".format(os.path.splitext(target_file)[0], "fo2pu")  # TODO: Add input argument with default as {target_file}_fo2pu.miz
     print(f"INFO [fo2pu]:  Configuration:  target_file= {target_file} | unit_map= {unit_map_file} | output_file={output_file}")  # TODO:  add logging
