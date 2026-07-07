@@ -275,9 +275,97 @@
         },
         "RED": {
             "unit_heading": 270,
-            "nation_name_tag_map": {},
+            "nation_name_tag_map": {
+                "Russia": "RUS"
+            },
             "nations": {
                 "Default": {
+                    "ADA": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 250,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_SR_9S18M1", "qty": 1},
+                            {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_CC_9S470M1", "qty": 1},
+                            {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_LN_9A310M1", "qty": 3}
+                        ]
+                    },
+                    "ARMOR": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Armor.T_72B", "qty": 4},
+                            {"dcs_obj_name": "vehicles.Armor.BMP_2", "qty": 4}
+                        ]
+                    },
+                    "ARTY": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Artillery.SAU_Gvozdika", "qty": 4},
+                            {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
+                        ]
+                    },
+                    "ENG": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
+                        ]
+                    },
+                    "GUER": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Unarmed.UAZ_469", "qty": 8}
+                        ]
+                    },
+                    "HQ": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Unarmed.Ural_375_PBU", "qty": 1},
+                            {"dcs_obj_name": "vehicles.AirDefence.x_2S6_Tunguska", "qty": 1},
+                            {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
+                        ]
+                    },
+                    "INF": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Armor.BTR_82A", "qty": 8}
+                        ]
+                    },
+                    "LAT": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 8}
+                        ]
+                    },
+                    "MECH": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Armor.BMP_2", "qty": 8}
+                        ]
+                    },
+                    "MLRS": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Artillery.Grad_FDDM", "qty": 4},
+                            {"dcs_obj_name": "vehicles.Unarmed.Ural_375", "qty": 4}
+                        ]
+                    },
+                    "SF": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Unarmed.Tigr_233036", "qty": 8}
+                        ]
+                    }
+                },
+                "RUS": {
                     "ADA": {
                         "zone_radius": 100,
                         "dispersion_distance": 250,
