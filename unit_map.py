@@ -152,16 +152,16 @@ class Formation:
                             continue  # next tag
                     else:
                         for _, f in unit_map.factions.items():
-                            if tag in f.nations.keys():
+                            if tag in f.nation_name_tag_map.values():
                                 faction = f
-                                nation = faction.nations.get(tag)
+                                nation = faction.nations.get(tag, None)
             
             if faction is None:
                 print(f"WARN:  invalid formation {name}")
                 continue
             else:
                 if nation is None:
-                    nation = faction.get("Default", None)
+                    nation = faction.nations.get("Default", None)
 
             if (faction is not None) and (nation is not None):
                 for tag in tags:
@@ -169,7 +169,16 @@ class Formation:
                         if formation is not None:
                             print(f"WARN:  multiple formation tags [{name}]")
                         else:
-                            formation = deepcopy(nation.formations.get(tag))
+                            _form = nation.formations.get(tag)
+                            formation = deepcopy(_form)
+                    else:
+                        if tag in faction.nations.get("Default").formations.keys():
+                            if formation is not None:
+                                print(f"WARN:  multiple formation tags [{name}]")
+                            else:
+                                print(f"INFO:  using faction [{faction.tag}] default formation for [{name}]")
+                                _form = faction.nations.get("Default").formations.get(tag)
+                                formation = deepcopy(_form)
 
             if formation is None:
                 print(f"WARN:  invalid formation {name}")
@@ -206,17 +215,19 @@ class Nation:
 
 
 class Faction:
-    def __init__(self, tag:str, unit_heading:int, nations:list):
+    def __init__(self, tag:str, unit_heading:int, nations:list, nation_name_tag_map:dict):
         self.tag = tag
         self.unit_heading = unit_heading
         self.nations = nations
+        self.nation_name_tag_map = nation_name_tag_map
 
     @staticmethod
     def from_dict(key, data):
         faction = Faction(
             tag = key,
             unit_heading = data["unit_heading"],
-            nations = None
+            nations = None,
+            nation_name_tag_map = data["nation_name_tag_map"]
         )
         faction.nations = {
             nation.tag: nation for nation in
