@@ -5,7 +5,8 @@
             "unit_heading": 90,
             "nation_name_tag_map": {
                 "Finland": "FIN",
-                "Sweden": "SWE"
+                "Sweden": "SWE",
+                "Norway": "NOR"
             },
             "nations": {
                 "Default": {
@@ -268,6 +269,18 @@
                         "dispersion_distance": 50,
                         "unit_set": [
                             {"dcs_obj_name": "vehicles.Armor.M1043_HMMWV_Armament", "qty": 8}
+                        ]
+                    }
+                },
+                "NOR": {
+                    "ADA": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 250,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.AirDefence.NASAMS_Command_Post", "qty": 1},
+                            {"dcs_obj_name": "vehicles.AirDefence.NASAMS_LN_B", "qty": 2},
+                            {"dcs_obj_name": "vehicles.AirDefence.NASAMS_LN_C", "qty": 1},
+                            {"dcs_obj_name": "vehicles.AirDefence.NASAMS_Radar_MPQ64F1", "qty": 1}
                         ]
                     }
                 }
