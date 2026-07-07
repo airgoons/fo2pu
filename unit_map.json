@@ -1,5 +1,5 @@
 {
-    "miz_drawing_layer": "Author",
+    "miz_drawing_layers": ["Author", "Common"],
     "factions": {
         "BLUE": {
             "unit_heading": 90,

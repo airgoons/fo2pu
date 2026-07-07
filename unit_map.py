@@ -113,10 +113,13 @@ class Formation:
 
     @staticmethod
     def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
-        drawings = miz.drawings.get_layer_by_name(unit_map.miz_drawing_layer)
+        drawings = []
+        for layer in unit_map.miz_drawing_layers:
+            objs = miz.drawings.get_layer_by_name(layer).objects
+            drawings.extend(objs)
 
         formations = {}
-        for obj in drawings.objects:
+        for obj in drawings:
             if "_label" in obj.name:
                 continue  # reject specific objects
 
@@ -223,14 +226,14 @@ class Faction:
 
 
 class UnitMap:
-    def __init__(self, miz_drawing_layer:str, factions:dict):
-        self.miz_drawing_layer = miz_drawing_layer
+    def __init__(self, miz_drawing_layers:list, factions:dict):
+        self.miz_drawing_layers = tuple(miz_drawing_layers)
         self.factions = factions
 
     @staticmethod
     def from_dict(data):
         return UnitMap(
-            miz_drawing_layer = data["miz_drawing_layer"],
+            miz_drawing_layers = data["miz_drawing_layers"],
             factions = {
                 faction.tag: faction for faction in
                 (Faction.from_dict(k, v) for k,v in data["factions"].items())
