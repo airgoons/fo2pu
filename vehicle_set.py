@@ -52,22 +52,6 @@ class VehiclePositioner:
         dcs.vehicles.Unarmed: True
     }
 
-    _IADS_BASE_DESIGNATORS = {
-        dcs.vehicles.AirDefence.Hawk_cwar: "Hawk_cwar",
-        dcs.vehicles.AirDefence.Hawk_ln: "Hawk_ln",
-        dcs.vehicles.AirDefence.Hawk_pcp: "Hawk_pcp",
-        dcs.vehicles.AirDefence.Hawk_sr: "Hawk_sr",
-        dcs.vehicles.AirDefence.Hawk_tr: "Hawk_tr",
-        dcs.vehicles.AirDefence.SA_11_Buk_CC_9S470M1: "SA_11_Buk_CC_9S470M1",
-        dcs.vehicles.AirDefence.SA_11_Buk_LN_9A310M1: "SA_11_Buk_LN_9A310M1",
-        dcs.vehicles.AirDefence.SA_11_Buk_SR_9S18M1: "SA_11_Buk_SR_9S18M1",
-        dcs.vehicles.AirDefence.M1097_Avenger: "M1097_Avenger",
-        dcs.vehicles.AirDefence.x_2S6_Tunguska: "x_2S6_Tunguska",
-        dcs.vehicles.AirDefence.HQ_7_LN_SP: "HQ_7_LN_SP",
-        dcs.vehicles.AirDefence.Roland_Radar: "Roland_Radar",
-        dcs.vehicles.AirDefence.Roland_ADS: "Roland_ADS"
-    }
-
     @staticmethod
     def _check_property(unit, prop):
         for vehicle_class, override in prop.items():
@@ -104,15 +88,6 @@ class VehiclePositioner:
 
         return theta
 
-    @staticmethod
-    def get_iads_designator(dcs_object):
-        if dcs_object in VehiclePositioner._IADS_BASE_DESIGNATORS:
-            return VehiclePositioner._IADS_BASE_DESIGNATORS.get(dcs_object) 
-
-        else:
-            return ""
-
-
     def __init__(self, zone_radius:int, dispersion_distance:int):
         self.zone_radius = zone_radius
         self.dispersion_distance = dispersion_distance
@@ -130,9 +105,7 @@ class VehiclePositioner:
 
         combat_distance = random.randint(1, formation.zone_radius)
 
-        combat_area_center = formation.position.point_from_heading(theta_1c, combat_distance)
-
-        
+        combat_area_center = formation.position.point_from_heading(theta_1c, combat_distance)        
 
         # support area
         theta_1s_high = VehiclePositioner.normalize_heading(theta_0 - 180 + 35)
@@ -246,8 +219,7 @@ class VehiclePositioner:
 
             
             unit = formation.unit_set[i]
-            iads_designator = VehiclePositioner.get_iads_designator(unit)
-            name = f"{formation.name} ACTIVE {i} {iads_designator}"
+            name = f"{formation.name} ACTIVE {i}"
 
             vehicle = Vehicle(name, vehicle_set, unit, position, False)
             vehicles.append(vehicle)
