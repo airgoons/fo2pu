@@ -1,5 +1,9 @@
 import dcs
+
+from unit_map import Formation
 from vehicle_set import VehicleSet, Vehicle
+import mantis_interop
+
 
 class UnitSpawner:
     @staticmethod
@@ -14,9 +18,9 @@ class UnitSpawner:
         return country
 
     @staticmethod
-    def add_static_group(miz:dcs.Mission, name:str, vehicles:list[Vehicle]):
+    def add_static_group(miz:dcs.Mission, vehicle_set:VehicleSet, vehicles:list[Vehicle]):
         if len(vehicles) > 0:
-            group_name = f"{name} STATIC"
+            group_name = f"{vehicle_set.name} STATIC"
 
             static_point = dcs.point.StaticPoint(vehicles[0].position)
 
@@ -46,9 +50,20 @@ class UnitSpawner:
             return None
     
     @staticmethod
-    def add_active_group(miz:dcs.Mission, name:str, vehicles:list[Vehicle]):
+    def add_active_group(miz:dcs.Mission, vehicle_set:VehicleSet, vehicles:list[Vehicle], iads=False):
         if len(vehicles) > 0:
-            group_name = f"{name} ACTIVE"
+            group_name = f"{vehicle_set.name} ACTIVE"
+
+            if iads:
+                iads_faction = mantis_interop.FactionTag_MantisTagLUT.get_mantis_tag(vehicle_set.faction.tag)
+                if iads_faction is None:
+                    raise ValueError(f"faction [{vehicle_set.faction.tag}] not supported in mantis_interop")
+                
+                iads_sam_tag = mantis_interop.MantisSamTag_DcsObjLUT.get_best_mantis_tag([vehicle.dcs_object for vehicle in vehicles])
+                if iads_sam_tag is None:
+                    raise ValueError(f"unit set not supported in mantis_interop")
+
+                group_name = f"{group_name} {iads_faction} {iads_sam_tag}"
 
 
             country = UnitSpawner.get_country(miz, vehicles[0].parent)
@@ -81,8 +96,12 @@ class UnitSpawner:
         statics = [vehicle for vehicle in vehicle_set.vehicles if vehicle.is_static == True]
         actives = [vehicle for vehicle in vehicle_set.vehicles if vehicle.is_static == False]
         
-        static_group = UnitSpawner.add_static_group(miz, vehicle_set.name, statics)
-        active_group = UnitSpawner.add_active_group(miz, vehicle_set.name, actives)
+        static_group = UnitSpawner.add_static_group(miz, vehicle_set, statics)
+
+        if vehicle_set.formation.formation_type is Formation.FormationType.ADA:  # MANTIS IADS HANDLING
+            active_group = UnitSpawner.add_active_group(miz, vehicle_set, actives, iads=True)
+        else:
+            active_group = UnitSpawner.add_active_group(miz, vehicle_set, actives, iads=False)
 
         groups = [static_group, active_group]
         while None in groups:
