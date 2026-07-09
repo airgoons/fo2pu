@@ -63,7 +63,7 @@ class UnitSpawner:
                 if iads_sam_tag is None:
                     raise ValueError(f"unit set not supported in mantis_interop")
 
-                group_name = f"{group_name} {iads_faction} {iads_sam_tag}"
+                group_name = f"{iads_faction} {iads_sam_tag} {group_name}"
 
 
             country = UnitSpawner.get_country(miz, vehicles[0].parent)
