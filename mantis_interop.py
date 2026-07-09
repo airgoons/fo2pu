@@ -56,7 +56,8 @@ class MantisSamTag_DcsObjLUT:
         "Pantsir S1": [dcs.vehicles.AirDefence.CHAP_PantsirS1],
         "Tor M2": [dcs.vehicles.AirDefence.CHAP_TorM2],
         "IRIS-T SLM": [dcs.vehicles.AirDefence.CHAP_IRISTSLM_CP, dcs.vehicles.AirDefence.CHAP_IRISTSLM_LN, dcs.vehicles.AirDefence.CHAP_IRISTSLM_STR],
-        "SON-9": [dcs.vehicles.AirDefence.SON_9]
+        "SON-9": [dcs.vehicles.AirDefence.SON_9],
+        "SHORT": [dcs.vehicles.AirDefence.Soldier_stinger]  # NOTE:  SHORT range pydcs units which are not in MANTIS's SamData
     }
     
     @staticmethod
