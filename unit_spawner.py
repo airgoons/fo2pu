@@ -92,18 +92,23 @@ class UnitSpawner:
             return None
 
     @staticmethod
+    def is_ada_vehicle(vehicle:Vehicle):
+        _name = vehicle.dcs_object.__name__
+        _dict = dcs.vehicles.AirDefence.__dict__
+        return (_name in _dict)
+
+    @staticmethod
     def add_vehicle_set(miz:dcs.Mission, vehicle_set:VehicleSet):
+
         statics = [vehicle for vehicle in vehicle_set.vehicles if vehicle.is_static == True]
-        actives = [vehicle for vehicle in vehicle_set.vehicles if vehicle.is_static == False]
+        actives = [vehicle for vehicle in vehicle_set.vehicles if ((vehicle.is_static == False) and (not UnitSpawner.is_ada_vehicle(vehicle)))]
+        iads = [vehicle for vehicle in vehicle_set.vehicles if ((vehicle.is_static == False) and (UnitSpawner.is_ada_vehicle(vehicle)))]
         
         static_group = UnitSpawner.add_static_group(miz, vehicle_set, statics)
+        active_group = UnitSpawner.add_active_group(miz, vehicle_set, actives, iads=False)
+        iads_group = UnitSpawner.add_active_group(miz, vehicle_set, iads, iads=True)
 
-        if vehicle_set.formation.formation_type is Formation.FormationType.ADA:  # MANTIS IADS HANDLING
-            active_group = UnitSpawner.add_active_group(miz, vehicle_set, actives, iads=True)
-        else:
-            active_group = UnitSpawner.add_active_group(miz, vehicle_set, actives, iads=False)
-
-        groups = [static_group, active_group]
+        groups = [static_group, active_group, iads_group]
         while None in groups:
             groups.remove(None)
 
