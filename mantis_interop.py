@@ -4,7 +4,7 @@ from collections import Counter
 import dcs
 
 class FactionTag_MantisTagLUT:
-    # mantis_tag: faction_tag
+    # faction_tag: mantis_tag
     _data = {
         "BLUE": "NATO SAM",
         "RED": "RuAF SAM"
@@ -24,22 +24,22 @@ class MantisSamTag_DcsObjLUT:
         "Rapier": [dcs.vehicles.AirDefence.rapier_fsa_blindfire_radar, dcs.vehicles.AirDefence.rapier_fsa_launcher, dcs.vehicles.AirDefence.rapier_fsa_optical_tracker_unit],
         "SA-2": [dcs.vehicles.AirDefence.p_19_s_125_sr, dcs.vehicles.AirDefence.RD_75, dcs.vehicles.AirDefence.S_75M_Volhov, dcs.vehicles.AirDefence.SNR_75V],
         "SA-3": [dcs.vehicles.AirDefence.p_19_s_125_sr, dcs.vehicles.AirDefence.snr_s_125_tr, dcs.vehicles.AirDefence.x_5p73_s_125_ln],
-        "SA-5": [],
-        "SA-6": [],
-        "SA-10": [],
+        "SA-5": [dcs.vehicles.AirDefence.p_19_s_125_sr, dcs.vehicles.AirDefence.P14_SR, dcs.vehicles.AirDefence.RLS_19J6, dcs.vehicles.AirDefence.RPC_5N62V, dcs.vehicles.AirDefence.S_200_Launcher],
+        "SA-6": [dcs.vehicles.AirDefence.Kub_1S91_str, dcs.vehicles.AirDefence.Kub_2P25_ln],
+        "SA-10": [dcs.vehicles.AirDefence.S_300PS_5P85C_ln, dcs.vehicles.AirDefence.S_300PS_5P85D_ln, dcs.vehicles.AirDefence.S_300PS_54K6_cp, dcs.vehicles.AirDefence.S_300PS_40B6M_tr, dcs.vehicles.AirDefence.S_300PS_64H6E_sr, dcs.vehicles.AirDefence.S_300PS_40B6MD_sr_19J6, dcs.vehicles.AirDefence.S_300PS_5H63C_30H6_tr, dcs.vehicles.AirDefence.S_300PS_40B6MD_sr],
         "SA-11": [dcs.vehicles.AirDefence.SA_11_Buk_CC_9S470M1, dcs.vehicles.AirDefence.SA_11_Buk_LN_9A310M1, dcs.vehicles.AirDefence.SA_11_Buk_SR_9S18M1],
         "Roland": [dcs.vehicles.AirDefence.Roland_ADS, dcs.vehicles.AirDefence.Roland_Radar],
         "Gepard": [dcs.vehicles.AirDefence.Gepard],
         "HQ-7": [dcs.vehicles.AirDefence.HQ_7_LN_P, dcs.vehicles.AirDefence.HQ_7_LN_SP, dcs.vehicles.AirDefence.HQ_7_STR_SP],
-        "SA-9": [],
-        "SA-8": [],
-        "SA-19": [],
-        "SA-15": [],
-        "SA-13": [],
+        "SA-9": [dcs.vehicles.AirDefence.Strela_1_9P31],
+        "SA-8": [dcs.vehicles.AirDefence.Osa_9A33_ln],
+        "SA-19": [dcs.vehicles.AirDefence.x_2S6_Tunguska],
+        "SA-15": [dcs.vehicles.AirDefence.Tor_9A331],
+        "SA-13": [dcs.vehicles.AirDefence.Strela_10M3],
         "Avenger": [dcs.vehicles.AirDefence.M1097_Avenger],
         "Chaparral": [dcs.vehicles.AirDefence.M48_Chaparral],
         "Linebacker": [dcs.vehicles.AirDefence.M6_Linebacker],
-        "Silkworm": [],
+        "Silkworm": [dcs.vehicles.MissilesSS.hy_launcher, dcs.vehicles.MissilesSS.Silkworm_SR],
         "C-RAM": [dcs.vehicles.AirDefence.HEMTT_C_RAM_Phalanx],
         "SA-10B": [],
         "SA-17": [],
