@@ -68,23 +68,30 @@ if __name__ == "__main__":
     unit_map_file = arguments.unit_map
     output_file = arguments.output
 
-    logger.info(f"Configuration:  target_file= {target_file} | unit_map= {unit_map_file} | output_file={output_file}") 
+    if not os.path.isfile(target_file):
+        logger.critical(f"path provided by -t/--target is not a file or does not exist [{target_file}]")
 
-    # Process Data
-    unit_map = UnitMap.from_json(unit_map_file)
-
-    miz = dcs.Mission(terrain=dcs.terrain.Kola())
-    miz.load_file(target_file)
-    logger.info("Mission Loaded")
+    elif not os.path.isfile(unit_map_file):
+        logger.critical(f"path provided by -u/--unit_map is not a file or does not exist [{unit_map_file}]")
     
-    formations = Formation.formations_from_miz(miz, unit_map)
+    else:
+        logger.info(f"Configuration:  target_file= {target_file} | unit_map= {unit_map_file} | output_file={output_file}") 
 
-    vehicle_sets = VehicleSet.sets_from_formations(formations, miz)
+        # Process Data
+        unit_map = UnitMap.from_json(unit_map_file)
 
-    groups = UnitSpawner.add_vehicle_sets(miz, vehicle_sets)
+        miz = dcs.Mission(terrain=dcs.terrain.Kola())
+        miz.load_file(target_file)
+        logger.info("Mission Loaded")
+        
+        formations = Formation.formations_from_miz(miz, unit_map)
 
-    logger.info(f"Saving output: {output_file}")
-    miz.save(output_file)
+        vehicle_sets = VehicleSet.sets_from_formations(formations, miz)
 
-    # End
-    logger.info("Done")
+        groups = UnitSpawner.add_vehicle_sets(miz, vehicle_sets)
+
+        logger.info(f"Saving output: {output_file}")
+        miz.save(output_file)
+
+        # End
+        logger.info("Done")
