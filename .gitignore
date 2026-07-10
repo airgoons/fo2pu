@@ -1,6 +1,7 @@
 # Dev environment
 .vscode/*
 __pycache__/*
+logs/*
 
 # DCS
 *.miz
