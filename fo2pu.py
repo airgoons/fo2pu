@@ -1,7 +1,10 @@
 # Native Dependencies
-import os.path
+import os
 import json
 from operator import attrgetter
+from datetime import datetime
+import logging
+import argparse
 
 # External Dependencies
 import dcs
@@ -12,19 +15,67 @@ from vehicle_set import VehicleSet
 
 from unit_spawner import UnitSpawner
 
+def initialize_logging():
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    logging.addLevelName(logging.WARNING, "WARN")
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(asctime)s [%(name)s] %(levelname)s: %(message)s')
+
+    file_handler = logging.FileHandler(f"fo2pu.log", 'w')  # overwrite log on each run
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+    console = logging.StreamHandler()
+    console.setFormatter(formatter)
+    logger.addHandler(console)
+
+    return logger
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-t", "--target",
+        default="test_input.miz",
+        help="path to input miz"
+    )
+
+    parser.add_argument(
+        "-u", "--unit-map",
+        default="unit_map.json",
+        help="path to unit map json"
+    )
+
+    parser.add_argument(
+        "-o", "--output",
+        default="fo2pu.miz",
+        help="path to output miz"
+    )
+
+    return parser.parse_args()
+
 
 if __name__ == "__main__":
-    target_file = "UTNS_U Day 1_test.miz"  # TODO:  Add input argument
-    unit_map_file = "unit_map.json"    # TODO: Add input argument
-    output_file = "{0}_{1}.miz".format(os.path.splitext(target_file)[0], "fo2pu")  # TODO: Add input argument with default as {target_file}_fo2pu.miz
-    print(f"INFO [fo2pu]:  Configuration:  target_file= {target_file} | unit_map= {unit_map_file} | output_file={output_file}")  # TODO:  add logging
+    logger = initialize_logging()
+    arguments = parse_arguments()
 
+    target_file = arguments.target
+    unit_map_file = arguments.unit_map
+    output_file = arguments.output
 
+    logger.info(f"Configuration:  target_file= {target_file} | unit_map= {unit_map_file} | output_file={output_file}") 
+
+    # Process Data
     unit_map = UnitMap.from_json(unit_map_file)
 
     miz = dcs.Mission(terrain=dcs.terrain.Kola())
     miz.load_file(target_file)
-    print("INFO [fo2pu]:  Mission Loaded")  # TODO:  add logging
+    logger.info("Mission Loaded")
     
     formations = Formation.formations_from_miz(miz, unit_map)
 
@@ -32,6 +83,8 @@ if __name__ == "__main__":
 
     groups = UnitSpawner.add_vehicle_sets(miz, vehicle_sets)
 
-    print(f"INFO [fo2pu]:  Saving output: {output_file}")
+    logger.info(f"Saving output: {output_file}")
     miz.save(output_file)
-    print("INFO [fo2pu]:  Done")  # TODO:  add logging
+
+    # End
+    logger.info("Done")

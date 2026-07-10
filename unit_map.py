@@ -3,6 +3,7 @@ import json
 from operator import attrgetter
 from enum import StrEnum
 from copy import deepcopy
+import logging
 
 import dcs
 
@@ -26,6 +27,7 @@ class UnitSetEntry:
 
 
 class Formation:
+    logger = logging.getLogger(f"{__module__}.{__qualname__}")
     class FormationType(StrEnum):
         ADA = "ADA"
         ARMOR = "ARMOR"
@@ -129,7 +131,7 @@ class Formation:
             name = obj.name
             tags = name.split("-")[1:]  # NOTE:  assuming no whitespace
             if len(tags) == 0:
-                print(f"WARN:  tagless object [{name}]")  # TODO:  logging
+                Formation.logger.warn(f"tagless object [{name}]")
                 continue  # reject tagless item
 
             faction = None
@@ -157,7 +159,7 @@ class Formation:
                                 nation = faction.nations.get(tag, None)
             
             if faction is None:
-                print(f"WARN:  invalid formation {name}")
+                Formation.logger.warn(f"invalid formation {name}")
                 continue
             else:
                 if nation is None:
@@ -167,21 +169,21 @@ class Formation:
                 for tag in tags:
                     if tag in nation.formations.keys():
                         if formation is not None:
-                            print(f"WARN:  multiple formation tags [{name}]")
+                            Formation.logger.warn(f"multiple formation tags [{name}]")
                         else:
                             _form = nation.formations.get(tag)
                             formation = deepcopy(_form)
                     else:
                         if tag in faction.nations.get("Default").formations.keys():
                             if formation is not None:
-                                print(f"WARN:  multiple formation tags [{name}]")
+                                Formation.logger.warn(f"multiple formation tags [{name}]")
                             else:
-                                print(f"INFO:  using faction [{faction.tag}] default formation for [{name}]")
+                                Formation.logger.info(f"using faction [{faction.tag}] default formation for [{name}]")
                                 _form = faction.nations.get("Default").formations.get(tag)
                                 formation = deepcopy(_form)
 
             if formation is None:
-                print(f"WARN:  invalid formation {name}")
+                Formation.logger.warn(f"invalid formation {name}")
             else:
                 formation.name = obj.name
                 formation.position = obj.position
