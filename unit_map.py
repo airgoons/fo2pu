@@ -29,6 +29,7 @@ class UnitSetEntry:
 class Formation:
     logger = logging.getLogger(f"{__module__}.{__qualname__}")
     class FormationType(StrEnum):
+        AASLT = "AASLT"
         ADA = "ADA"
         ARMOR = "ARMOR"
         ARTY = "ARTY"

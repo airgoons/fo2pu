@@ -293,6 +293,14 @@
             },
             "nations": {
                 "Default": {
+                    "AASLT": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Armor.BMD_1", "qty": 8},
+                            {"dcs_obj_name": "vehicles.AirDefence.SA_18_Igla_manpad", "qty": 1}
+                        ]
+                    },
                     "ADA": {
                         "zone_radius": 100,
                         "dispersion_distance": 250,
@@ -379,6 +387,14 @@
                     }
                 },
                 "RUS": {
+                    "AASLT": {
+                        "zone_radius": 100,
+                        "dispersion_distance": 50,
+                        "unit_set": [
+                            {"dcs_obj_name": "vehicles.Armor.BMD_1", "qty": 8},
+                            {"dcs_obj_name": "vehicles.AirDefence.SA_18_Igla_manpad", "qty": 1}
+                        ]
+                    },
                     "ADA": {
                         "zone_radius": 100,
                         "dispersion_distance": 250,
