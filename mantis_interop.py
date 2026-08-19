@@ -57,7 +57,7 @@ class MantisSamTag_DcsObjLUT:
         "Tor M2": [dcs.vehicles.AirDefence.CHAP_TorM2],
         "IRIS-T SLM": [dcs.vehicles.AirDefence.CHAP_IRISTSLM_CP, dcs.vehicles.AirDefence.CHAP_IRISTSLM_LN, dcs.vehicles.AirDefence.CHAP_IRISTSLM_STR],
         "SON-9": [dcs.vehicles.AirDefence.SON_9],
-        "SHORT": [dcs.vehicles.AirDefence.Soldier_stinger]  # NOTE:  SHORT range pydcs units which are not in MANTIS's SamData
+        "SHORT": [dcs.vehicles.AirDefence.Soldier_stinger, dcs.vehicles.AirDefence.SA_18_Igla_manpad]  # NOTE:  SHORT range pydcs units which are not in MANTIS's SamData
     }
     
     @staticmethod
