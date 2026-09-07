@@ -187,11 +187,42 @@ class VehiclePositioner:
 
 
     def _generate_positions_ada(self, vehicle_set:VehicleSet, miz:dcs.Mission):
+        """
+        ADA positions are generated as multiple rings of units with the following assumptions:
+            - the first unit_set in unit_sets is to be spawned in a line formation 25m apart in the center
+            - each successive unit_set is to be evenly distributed in a ring
+            - the last unit_set ring radius is set by the formation.dispersion_distance parameter
+        """
         formation = vehicle_set.formation
 
-        if len(formation.unit_set) <= 0:
-            raise ValueError("formation.unit_set must contain units")
+        unit_sets = []
+        if len(formation.unit_set) > 0:
+            unit_sets.append(formation.unit_set)
+        elif len(formation.unit_sets) > 0:
+            unit_sets = formation.unit_sets
 
+        for unit_set in unit_sets:
+            if len(unit_set) <= 0:
+                raise ValueError("unit_set must contain units")
+
+
+        legacy_group = None
+        center_group = None
+        outer_ring_group = None
+        inner_rings = None
+
+        if len(unit_sets) == 1:
+            legacy_group = unit_sets[0]
+
+        elif len(unit_sets) > 1:
+            center_group = unit_sets[0]
+            outer_ring_group = unit_sets[-1]
+
+            if len(unit_sets) > 2:
+                inner_rings = unit_sets[1:-1]
+
+
+        # MATH STUFF
         theta_0 = VehiclePositioner.normalize_heading(vehicle_set.faction.unit_heading)
 
         theta_1c_high = VehiclePositioner.normalize_heading(theta_0 + 70)
@@ -202,30 +233,82 @@ class VehiclePositioner:
         
         area_center = formation.position.point_from_heading(theta_1c, area_distance)
         
-        delta_theta2 = int(360/(len(formation.unit_set)))
+        if legacy_group is not None:
+            delta_theta2 = int(360/(len(legacy_group)))
 
-        vehicles = []
-        for i in range(len(formation.unit_set)):
-            position = None
-            if i == 0:
-                position = area_center
-            else:
-                theta2 = random.randint(
-                    VehiclePositioner.normalize_heading(delta_theta2 * i - int(delta_theta2/3)),
-                    VehiclePositioner.normalize_heading(delta_theta2 * i + int(delta_theta2/3))
-                )
+            vehicles = []
+            for i in range(len(legacy_group)):
+                position = None
+                if i == 0:
+                    position = area_center
+                else:
+                    theta2 = random.randint(
+                        VehiclePositioner.normalize_heading(delta_theta2 * i - int(delta_theta2/3)),
+                        VehiclePositioner.normalize_heading(delta_theta2 * i + int(delta_theta2/3))
+                    )
+                    position = area_center.point_from_heading(theta2, formation.dispersion_distance)
+
+
+                
+                unit = legacy_group[i]
+                name = f"{formation.name} ACTIVE {i}"
+
+                vehicle = Vehicle(name, vehicle_set, unit, position, False)
+                vehicles.append(vehicle)
+
+            return tuple(vehicles)
+        else:
+            vehicles = []
+
+            # Handle center group line formation
+            for i in range(len(center_group)):
+                if i == 0:
+                    position = area_center
+                else:
+                    NotImplementedError("TODO:  support multiple units in the center group")
+
+                unit = center_group[i]
+                name = f"{formation.name} CENTER {i}"
+                vehicle = Vehicle(name, vehicle_set, unit, position, False)
+                vehicles.append(vehicle)
+
+            # Handle outer ring radial formation
+            delta_theta2_outer = int(360/len(outer_ring_group))
+            for i in range(len(outer_ring_group)):
+                theta2_range = [
+                    delta_theta2_outer * (i+1) - int(delta_theta2_outer/3),
+                    delta_theta2_outer * (i+1) + int(delta_theta2_outer/3)
+                ]
+                theta2 = VehiclePositioner.normalize_heading(random.randint(min(theta2_range), max(theta2_range)))
+
                 position = area_center.point_from_heading(theta2, formation.dispersion_distance)
 
+                unit = outer_ring_group[i]
+                name = f"{formation.name} RING_OUTER {i}"
+                vehicle = Vehicle(name, vehicle_set, unit, position, False)
+                vehicles.append(vehicle)
 
-            
-            unit = formation.unit_set[i]
-            name = f"{formation.name} ACTIVE {i}"
+            # Handle inner ring radial formations
+            for i in range(len(inner_rings)):
+                inner_ring_group = inner_rings[i]
 
-            vehicle = Vehicle(name, vehicle_set, unit, position, False)
-            vehicles.append(vehicle)
+                delta_theta2_inner = int(360/len(inner_ring_group))
 
-        return tuple(vehicles)
+                for j in range(len(inner_ring_group)):
+                    theta2_range = [
+                        delta_theta2_inner * (j+1) - int(delta_theta2_inner/3),
+                        delta_theta2_inner * (j+1) + int(delta_theta2_inner/3)
+                    ]
+                    theta2 = VehiclePositioner.normalize_heading(random.randint(min(theta2_range), max(theta2_range)))
 
+                    ring_radius = int(formation.dispersion_distance * (i + 1) / (len(inner_rings) + 1))
+                    position = area_center.point_from_heading(theta2, ring_radius)
+
+                    unit = inner_ring_group[j]
+                    name = f"{formation.name} RING_{i} {j}"
+                    vehicle = Vehicle(name, vehicle_set, unit, position, False)
+                    vehicles.append(vehicle)
+            return tuple(vehicles)
 
     def generate_positions(self, vehicle_set:VehicleSet, miz:dcs.Mission):
         vehicles = None
