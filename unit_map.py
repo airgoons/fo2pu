@@ -42,12 +42,13 @@ class Formation:
         MLRS = "MLRS"
         SF = "SF"
         
-    def __init__(self, nation:Nation, formation_type:FormationType, zone_radius:int, dispersion_distance:int, unit_set:list):
+    def __init__(self, nation:Nation, formation_type:FormationType, zone_radius:int, dispersion_distance:int, unit_set:list, unit_sets:list):
         self.nation = nation
         self.formation_type = formation_type
         self.zone_radius = zone_radius
         self.dispersion_distance = dispersion_distance
         self.unit_set = unit_set
+        self.unit_sets = unit_sets
 
         self._name = None 
         self._position = None
@@ -98,21 +99,42 @@ class Formation:
 
         self._tags = tuple(tags)
 
+
     @staticmethod
     def from_dict(nation, key, data):
-        unit_set_raw = [UnitSetEntry.from_dict(entry) for entry in data["unit_set"]]
-        
+        def _create_unit_set(data_unit_set):
+            unit_set_raw = [UnitSetEntry.from_dict(entry) for entry in data_unit_set]
+            unit_set = []
+            for entry in unit_set_raw:
+                unit_set.extend([entry.dcs_obj] * entry.qty)
+            return unit_set
+
+        data_unit_set = data.get("unit_set", None)
+        data_unit_sets = data.get("unit_sets", None)
+
+        # mutually exclusive parameters
+        if (data_unit_set is None) and (data_unit_sets is None):
+            raise ValueError("unit_set xor unit_sets must be set")
+        if (data_unit_set is not None) and (data_unit_sets is not None):
+            raise ValueError("unit_set and unit_sets cannot both be set")
+
         unit_set = []
-        for entry in unit_set_raw:
-            unit_set.extend([entry.dcs_obj] * entry.qty)
+        if data_unit_set is not None:
+            unit_set = _create_unit_set(data_unit_set)
+
+        unit_sets = []
+        if data_unit_sets is not None:
+            unit_sets = [_create_unit_set(data_unit_set) for data_unit_set in data_unit_sets]
 
         return Formation(
             nation = nation,
             formation_type = Formation.FormationType(key),
             zone_radius = data["zone_radius"],
             dispersion_distance = data["dispersion_distance"],
-            unit_set = unit_set   
+            unit_set = unit_set,
+            unit_sets = unit_sets
         )
+
 
     @staticmethod
     def formations_from_miz(miz:dcs.Mission, unit_map:UnitMap):
