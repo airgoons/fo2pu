@@ -398,10 +398,17 @@
                     "ADA": {
                         "zone_radius": 100,
                         "dispersion_distance": 250,
-                        "unit_set": [
-                            {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_SR_9S18M1", "qty": 1},
-                            {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_CC_9S470M1", "qty": 1},
-                            {"dcs_obj_name": "vehicles.AirDefence.SA_11_Buk_LN_9A310M1", "qty": 3}
+                        "unit_set": null,
+                        "unit_sets": [
+                            [
+                                {"dcs_obj_name": "vehicles.AirDefence.Kub_2P25_ln", "qty": 1}
+                            ],
+                            [
+                                {"dcs_obj_name": "vehicles.AirDefence.ZSU_23_4_Shilka", "qty": 4}
+                            ],
+                            [
+                                {"dcs_obj_name": "vehicles.AirDefence.Kub_2P25_ln", "qty": 4}
+                            ]
                         ]
                     },
                     "ARMOR": {
