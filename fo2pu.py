@@ -63,10 +63,19 @@ def parse_arguments():
 if __name__ == "__main__":
     logger = initialize_logging()
     arguments = parse_arguments()
+    
+    DEBUG = False
+    
+    if DEBUG:
+        logger.critical("-- DEBUG MODE IS ENABLED --")
+        target_file = "test.miz"
+        unit_map_file = "unit_map.json"
+        output_file = "output.miz"
 
-    target_file = arguments.target
-    unit_map_file = arguments.unit_map
-    output_file = arguments.output
+    if not DEBUG:
+        target_file = arguments.target
+        unit_map_file = arguments.unit_map
+        output_file = arguments.output
 
     if not os.path.isfile(target_file):
         logger.critical(f"path provided by -t/--target is not a file or does not exist [{target_file}]")
